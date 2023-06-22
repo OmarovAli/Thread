@@ -9,8 +9,8 @@ public class Main {
             texts[i] = generateText("aab", 30_000);
         }
         long startTs = System.currentTimeMillis(); // start time
-        Thread ab = new Thread( () -> {
-            for (String text : texts) {
+        for (String text : texts) {
+            Thread ab = new Thread(() -> {
                 int maxSize = 0;
                 for (int i = 0; i < text.length(); i++) {
                     for (int j = 0; j < text.length(); j++) {
@@ -30,11 +30,10 @@ public class Main {
                     }
                 }
                 System.out.println(text.substring(0, 100) + " -> " + maxSize);
-            }
+            });
+            threads.add(ab);
+            ab.start();
         }
-        );
-        threads.add(ab);
-        ab.start();
         for (Thread thread : threads) {
             thread.join();
         }
